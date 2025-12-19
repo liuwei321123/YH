@@ -3,257 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>永辉订单分发处理系统</title>
+    <title>智能订单厂家匹配与拆分工具</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #1a73e8;
-            --secondary: #34a853;
-            --accent: #ff6b35;
-            --warning: #f9ab00;
-            --danger: #ea4335;
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
             --light: #f8f9fa;
-            --dark: #202124;
-            --gray: #5f6368;
-            --light-gray: #e8eaed;
-            --border-radius: 12px;
-            --box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --dark: #2c3e50;
+            --gray: #7f8c8d;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3e9f7 100%);
             min-height: 100vh;
+            padding: 20px;
             color: var(--dark);
-            line-height: 1.6;
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
             padding: 25px;
-        }
-        
-        /* 头部样式 */
-        .header-wrapper {
-            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
-            border-radius: var(--border-radius);
-            padding: 35px 40px;
-            margin-bottom: 35px;
-            box-shadow: var(--box-shadow);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .header-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transform: translate(30%, -30%);
-        }
-        
-        .header-wrapper::after {
-            content: '';
-            position: absolute;
-            bottom: -50px;
-            left: -50px;
-            width: 150px;
-            height: 150px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-        }
-        
-        .main-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .logo-icon {
-            width: 60px;
-            height: 60px;
             background: white;
-            border-radius: 50%;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-left: 6px solid var(--primary);
+        }
+        
+        h1 {
+            color: var(--dark);
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            gap: 15px;
+            font-size: 1.8rem;
         }
         
-        .logo-icon i {
-            font-size: 28px;
+        h1 i {
             color: var(--primary);
         }
         
-        .header-text h1 {
-            color: white;
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            letter-spacing: 0.5px;
-        }
-        
-        .header-text .version {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 0.9rem;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 3px 12px;
-            border-radius: 20px;
-            display: inline-block;
-        }
-        
         .subtitle {
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--gray);
             font-size: 1.1rem;
             max-width: 800px;
-            position: relative;
-            z-index: 2;
+            margin: 0 auto;
+            line-height: 1.6;
         }
         
-        /* 卡片样式 */
         .upload-sections {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 30px;
-            margin-bottom: 35px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
         }
         
         .card {
             background: white;
-            border-radius: var(--border-radius);
-            padding: 30px;
-            box-shadow: var(--box-shadow);
-            border: 1px solid var(--light-gray);
-            transition: var(--transition);
-            height: 100%;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
         
         .card-title {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            padding-bottom: 18px;
-            border-bottom: 2px solid var(--light-gray);
+            gap: 12px;
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-size: 1.2rem;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary);
         }
         
         .card-title i {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: var(--primary);
-            background: linear-gradient(135deg, var(--primary), #0d47a1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
-        .card-title span {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .step-badge {
-            margin-left: auto;
-            background: var(--primary);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        
-        /* 上传区域样式 */
         .upload-area {
-            border: 2px dashed var(--primary);
+            border: 3px dashed var(--primary);
             border-radius: 12px;
-            padding: 45px 25px;
+            padding: 35px 20px;
             text-align: center;
             cursor: pointer;
-            transition: var(--transition);
-            margin-bottom: 25px;
-            background: rgba(26, 115, 232, 0.02);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .upload-area::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            opacity: 0;
-            transition: var(--transition);
+            transition: all 0.3s;
+            margin-bottom: 20px;
+            background: #f8fbfe;
         }
         
         .upload-area:hover {
-            background: rgba(26, 115, 232, 0.05);
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-        
-        .upload-area:hover::after {
-            opacity: 1;
+            background: #e8f4fc;
+            border-color: #2980b9;
         }
         
         .upload-icon {
-            font-size: 56px;
-            margin-bottom: 20px;
+            font-size: 50px;
             color: var(--primary);
-            opacity: 0.9;
+            margin-bottom: 15px;
         }
         
         .upload-text {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
             color: var(--dark);
             font-weight: 600;
         }
         
         .upload-hint {
             color: var(--gray);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             margin-bottom: 5px;
         }
         
         .file-info {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: var(--light);
             border-radius: 10px;
-            padding: 22px;
-            margin-top: 20px;
+            padding: 18px;
+            margin-top: 15px;
             border-left: 4px solid var(--secondary);
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
         }
         
         .info-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
         }
         
         .info-row:last-child {
@@ -265,369 +157,263 @@
         .info-label {
             font-weight: 600;
             color: var(--dark);
-            font-size: 0.95rem;
         }
         
         .info-value {
             color: var(--primary);
-            font-weight: 700;
-            font-size: 1.1rem;
+            font-weight: 600;
         }
         
         .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
+            display: inline-block;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-        
-        .badge i {
-            font-size: 0.8rem;
         }
         
         .badge-success {
-            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            background: #d4edda;
             color: #155724;
-            border: 1px solid #b1dfbb;
         }
         
         .badge-warning {
-            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            background: #fff3cd;
             color: #856404;
-            border: 1px solid #ffeaa7;
         }
         
         .badge-danger {
-            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            background: #f8d7da;
             color: #721c24;
-            border: 1px solid #f5c6cb;
         }
         
-        .badge-info {
-            background: linear-gradient(135deg, #d1ecf1, #bee5eb);
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-        
-        /* 下拉选择样式 */
         .column-select {
             width: 100%;
-            padding: 14px 18px;
-            margin: 15px 0;
-            border: 2px solid var(--light-gray);
-            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
             font-size: 1rem;
             background: white;
-            transition: var(--transition);
-            color: var(--dark);
-        }
-        
-        .column-select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
-        }
-        
-        /* 按钮样式 */
-        .action-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
         }
         
         .btn {
-            padding: 18px 28px;
+            padding: 14px 25px;
             border: none;
-            border-radius: 10px;
-            font-size: 1.05rem;
+            border-radius: 8px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
+            gap: 10px;
+            transition: all 0.3s;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.7s;
-        }
-        
-        .btn:hover::before {
-            left: 100%;
+            margin-top: 15px;
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #0d47a1);
+            background: var(--primary);
             color: white;
-            box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
         }
         
         .btn-primary:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(26, 115, 232, 0.4);
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
         }
         
         .btn-secondary {
-            background: linear-gradient(135deg, var(--secondary), #1e7e34);
+            background: var(--secondary);
             color: white;
-            box-shadow: 0 4px 15px rgba(52, 168, 83, 0.3);
         }
         
         .btn-secondary:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(52, 168, 83, 0.4);
-        }
-        
-        .btn-accent {
-            background: linear-gradient(135deg, var(--accent), #e64a19);
-            color: white;
-            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
-        }
-        
-        .btn-accent:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+            background: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
         }
         
         .btn:disabled {
-            background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+            background: #bdc3c7;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
         
-        /* 结果区域样式 */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
         .results-section {
             background: white;
-            border-radius: var(--border-radius);
-            padding: 35px;
-            box-shadow: var(--box-shadow);
-            margin-top: 40px;
-            border: 1px solid var(--light-gray);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-top: 30px;
         }
         
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
         }
         
         .stat-card {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: var(--light);
             border-radius: 12px;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
-            border-top: 5px solid var(--primary);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid var(--primary);
         }
         
         .stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
+            font-size: 2rem;
+            font-weight: 700;
             color: var(--primary);
-            margin: 15px 0;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 10px 0;
         }
         
         .stat-label {
             color: var(--gray);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            font-weight: 600;
+            letter-spacing: 0.5px;
         }
         
-        /* 文件卡片样式 */
         .files-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
         }
         
         .file-card {
             background: white;
             border-radius: 12px;
-            padding: 25px;
+            padding: 20px;
             border: 2px solid #e9ecef;
-            transition: var(--transition);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .file-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 6px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         }
         
         .file-card:hover {
             border-color: var(--primary);
-            transform: translateY(-5px);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
         
         .file-icon {
-            font-size: 40px;
+            font-size: 35px;
             color: var(--primary);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             text-align: center;
-            opacity: 0.9;
         }
         
         .file-name {
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             word-break: break-word;
             color: var(--dark);
-            font-size: 1rem;
-            line-height: 1.4;
+            font-size: 0.95rem;
         }
         
         .file-meta {
             color: var(--gray);
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            line-height: 1.5;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
         }
         
         .download-btn {
-            background: linear-gradient(135deg, var(--secondary), #1e7e34);
+            background: var(--secondary);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            transition: var(--transition);
+            gap: 6px;
+            transition: all 0.3s;
             font-weight: 600;
             width: 100%;
             justify-content: center;
         }
         
         .download-btn:hover {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(52, 168, 83, 0.3);
+            background: #27ae60;
         }
         
-        /* 预览区域样式 */
         .preview-section {
             background: white;
-            border-radius: var(--border-radius);
-            padding: 35px;
-            box-shadow: var(--box-shadow);
-            margin: 40px 0;
-            border: 1px solid var(--light-gray);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin: 30px 0;
         }
         
         .preview-container {
-            max-height: 450px;
+            max-height: 400px;
             overflow: auto;
-            border: 2px solid var(--light-gray);
-            border-radius: 10px;
-            margin-top: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 15px;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 750px;
+            min-width: 700px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.9rem;
         }
         
         th {
-            background: linear-gradient(135deg, var(--primary), #0d47a1);
+            background-color: var(--primary);
             color: white;
             position: sticky;
             top: 0;
             font-weight: 600;
-            padding: 16px 20px;
-            text-align: left;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        td {
-            padding: 14px 20px;
-            text-align: left;
-            border-bottom: 1px solid var(--light-gray);
-            font-size: 0.95rem;
         }
         
         tr:hover {
-            background-color: rgba(26, 115, 232, 0.04);
+            background-color: #f9f9f9;
         }
         
         .manufacturer-cell {
-            font-weight: 700;
+            font-weight: 600;
             color: var(--primary);
-            background: rgba(26, 115, 232, 0.08);
+            background: #e8f4fc;
         }
         
         .unmatched-row {
-            background: linear-gradient(135deg, rgba(234, 67, 53, 0.08), rgba(234, 67, 53, 0.05));
+            background: #f8d7da;
         }
         
-        .unmatched-row:hover {
-            background: linear-gradient(135deg, rgba(234, 67, 53, 0.12), rgba(234, 67, 53, 0.08));
-        }
-        
-        /* 加载动画 */
         .loading {
             text-align: center;
-            padding: 50px;
+            padding: 40px;
         }
         
         .spinner {
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid var(--primary);
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 20px;
         }
         
         @keyframes spin {
@@ -635,67 +421,13 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* 底部信息 */
-        .footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 25px;
-            color: var(--gray);
-            font-size: 0.95rem;
-            border-top: 1px solid var(--light-gray);
-        }
-        
-        .footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-        
-        .footer a:hover {
-            color: var(--accent);
-            text-decoration: underline;
-        }
-        
-        /* 工具类 */
         .hidden {
             display: none !important;
         }
         
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(26, 115, 232, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(26, 115, 232, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(26, 115, 232, 0); }
-        }
-        
-        /* 响应式设计 */
-        @media (max-width: 992px) {
+        @media (max-width: 768px) {
             .upload-sections {
                 grid-template-columns: 1fr;
-            }
-            
-            .header-text h1 {
-                font-size: 1.8rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .header-wrapper {
-                padding: 25px 20px;
-            }
-            
-            .main-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
             }
             
             .action-buttons {
@@ -708,52 +440,6 @@
             
             .stats-grid {
                 grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
-            .card {
-                padding: 25px 20px;
-            }
-            
-            .results-section, .preview-section {
-                padding: 25px 20px;
-            }
-            
-            .btn {
-                padding: 16px 20px;
-                font-size: 1rem;
-            }
-            
-            .stat-value {
-                font-size: 2rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .upload-area {
-                padding: 30px 15px;
-            }
-            
-            .upload-icon {
-                font-size: 45px;
-            }
-            
-            .upload-text {
-                font-size: 1.1rem;
-            }
-            
-            .file-info {
-                padding: 18px 15px;
-            }
-            
-            .info-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-            
-            .info-label, .info-value {
-                width: 100%;
             }
             
             .preview-container {
@@ -761,51 +447,39 @@
             }
             
             th, td {
-                padding: 12px 15px;
+                padding: 8px 10px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 头部 -->
-        <div class="header-wrapper">
-            <div class="main-header">
-                <div class="logo-icon">
-                    <i class="fas fa-store-alt"></i>
-                </div>
-                <div class="header-text">
-                    <h1>永辉订单分发处理系统</h1>
-                    <span class="version">v2.0 智能版</span>
-                </div>
-            </div>
-            <p class="subtitle">智能商品库匹配 · 自动厂家分发 · 高效订单处理 · 数据可视化分析</p>
-        </div>
+        <header>
+            <h1><i class="fas fa-industry"></i> 订单厂家智能匹配系统</h1>
+            <p class="subtitle">上传商品库建立映射关系 → 上传订单自动匹配厂家 → 生成带日期的拆分文件</p>
+        </header>
         
-        <!-- 上传区域 -->
         <div class="upload-sections">
             <!-- 商品库上传 -->
             <div class="card">
                 <div class="card-title">
                     <i class="fas fa-warehouse"></i>
-                    <span>商品库管理</span>
-                    <span class="step-badge">步骤 1</span>
+                    <span>步骤1：上传商品库</span>
                 </div>
                 
                 <div class="upload-area" id="productUploadArea">
                     <div class="upload-icon">
                         <i class="fas fa-boxes"></i>
                     </div>
-                    <div class="upload-text">上传商品库文件</div>
+                    <div class="upload-text">点击或拖放商品库文件</div>
                     <div class="upload-hint">支持 .xlsx, .xls, .csv 格式</div>
-                    <div class="upload-hint">需包含商品编码和厂家信息</div>
-                    <div class="upload-hint">点击或拖放文件到此处</div>
+                    <div class="upload-hint">需要包含商品编码和厂家列</div>
                     <input type="file" id="productFile" accept=".xlsx,.xls,.csv" class="hidden">
                 </div>
                 
                 <div id="productInfo" class="file-info hidden">
                     <div class="info-row">
-                        <span class="info-label">文件名称：</span>
+                        <span class="info-label">文件：</span>
                         <span class="info-value" id="productFileName"></span>
                     </div>
                     <div class="info-row">
@@ -813,10 +487,8 @@
                         <span class="info-value" id="productCount">0</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label">文件状态：</span>
-                        <span id="productStatus" class="badge badge-warning">
-                            <i class="fas fa-clock"></i> 等待上传
-                        </span>
+                        <span class="info-label">状态：</span>
+                        <span id="productStatus" class="badge badge-warning">未上传</span>
                     </div>
                 </div>
                 
@@ -832,25 +504,23 @@
             <!-- 订单上传 -->
             <div class="card">
                 <div class="card-title">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                    <span>订单处理中心</span>
-                    <span class="step-badge">步骤 2</span>
+                    <i class="fas fa-file-invoice"></i>
+                    <span>步骤2：上传订单文件</span>
                 </div>
                 
                 <div class="upload-area" id="orderUploadArea">
                     <div class="upload-icon">
                         <i class="fas fa-shopping-cart"></i>
                     </div>
-                    <div class="upload-text">上传订单文件</div>
+                    <div class="upload-text">点击或拖放订单文件</div>
                     <div class="upload-hint">支持 .xlsx, .xls, .csv 格式</div>
-                    <div class="upload-hint">需包含商品编码信息</div>
-                    <div class="upload-hint">点击或拖放文件到此处</div>
+                    <div class="upload-hint">需要包含商品编码列</div>
                     <input type="file" id="orderFile" accept=".xlsx,.xls,.csv" class="hidden">
                 </div>
                 
                 <div id="orderInfo" class="file-info hidden">
                     <div class="info-row">
-                        <span class="info-label">文件名称：</span>
+                        <span class="info-label">文件：</span>
                         <span class="info-value" id="orderFileName"></span>
                     </div>
                     <div class="info-row">
@@ -858,10 +528,8 @@
                         <span class="info-value" id="orderCount">0</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label">文件状态：</span>
-                        <span id="orderStatus" class="badge badge-warning">
-                            <i class="fas fa-clock"></i> 等待上传
-                        </span>
+                        <span class="info-label">状态：</span>
+                        <span id="orderStatus" class="badge badge-warning">未上传</span>
                     </div>
                 </div>
                 
@@ -873,11 +541,11 @@
         
         <!-- 操作按钮 -->
         <div class="action-buttons">
-            <button id="matchBtn" class="btn btn-primary pulse" disabled>
-                <i class="fas fa-link"></i> 开始智能匹配
+            <button id="matchBtn" class="btn btn-primary" disabled>
+                <i class="fas fa-link"></i> 开始匹配厂家
             </button>
-            <button id="resetBtn" class="btn btn-accent">
-                <i class="fas fa-redo"></i> 重置系统
+            <button id="resetBtn" class="btn" style="background:var(--danger);color:white;">
+                <i class="fas fa-redo"></i> 重置所有
             </button>
         </div>
         
@@ -885,24 +553,24 @@
         <div class="preview-section hidden" id="previewSection">
             <div class="card-title">
                 <i class="fas fa-table"></i>
-                <span>匹配结果预览</span>
+                <span>数据预览</span>
             </div>
             
             <div class="preview-container" id="previewContainer">
                 <!-- 数据预览将显示在这里 -->
             </div>
             
-            <div id="previewStats" class="file-info hidden" style="margin-top:20px;">
+            <div id="previewStats" class="file-info hidden" style="margin-top:15px;">
                 <div class="info-row">
                     <span class="info-label">匹配成功率：</span>
                     <span class="info-value" id="matchRate">0%</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">已匹配订单：</span>
+                    <span class="info-label">已匹配：</span>
                     <span class="info-value" id="matchedCount">0</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">未匹配订单：</span>
+                    <span class="info-label">未匹配：</span>
                     <span class="info-value" id="unmatchedCount">0</span>
                 </div>
             </div>
@@ -911,13 +579,13 @@
         <!-- 结果区域 -->
         <div class="results-section hidden" id="resultsSection">
             <div class="card-title">
-                <i class="fas fa-chart-pie"></i>
-                <span>处理结果统计</span>
+                <i class="fas fa-chart-line"></i>
+                <span>处理结果</span>
             </div>
             
             <div id="loading" class="loading hidden">
                 <div class="spinner"></div>
-                <p>正在智能处理数据，请稍候...</p>
+                <p>正在处理文件，请稍候...</p>
             </div>
             
             <div id="resultsContent" class="hidden">
@@ -942,17 +610,17 @@
                 
                 <div class="action-buttons">
                     <button id="downloadMatchedBtn" class="btn btn-primary">
-                        <i class="fas fa-download"></i> 下载完整匹配表
+                        <i class="fas fa-download"></i> 下载匹配后的完整表格
                     </button>
                     <button id="splitBtn" class="btn btn-secondary">
-                        <i class="fas fa-file-export"></i> 按厂家拆分文件
+                        <i class="fas fa-cut"></i> 按厂家拆分多个文件
                     </button>
                 </div>
                 
                 <div id="splitResults" class="hidden">
                     <div class="card-title" style="margin-top:30px;">
-                        <i class="fas fa-folder-open"></i>
-                        <span>拆分结果文件</span>
+                        <i class="fas fa-file-export"></i>
+                        <span>拆分结果</span>
                     </div>
                     
                     <div class="files-container" id="filesContainer">
@@ -961,22 +629,16 @@
                     
                     <div class="action-buttons">
                         <button id="downloadAllBtn" class="btn btn-primary">
-                            <i class="fas fa-file-archive"></i> 打包下载所有文件
+                            <i class="fas fa-file-archive"></i> 打包下载所有拆分文件
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- 底部信息 -->
-        <div class="footer">
-            <p>永辉订单分发处理系统 © 2025  |  <a href="javascript:void(0)">BY:LW</a></p>
-            <p style="margin-top:8px;font-size:0.9rem;color:#888;">...</p>
-        </div>
     </div>
 
     <!-- 引入第三方库 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
     <script>
@@ -1051,16 +713,16 @@
         function setupDragAndDrop(area, fileInput, type) {
             area.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                area.style.backgroundColor = 'rgba(26, 115, 232, 0.1)';
+                area.style.backgroundColor = '#e8f4fc';
             });
             
             area.addEventListener('dragleave', () => {
-                area.style.backgroundColor = 'rgba(26, 115, 232, 0.02)';
+                area.style.backgroundColor = '#f8fbfe';
             });
             
             area.addEventListener('drop', (e) => {
                 e.preventDefault();
-                area.style.backgroundColor = 'rgba(26, 115, 232, 0.02)';
+                area.style.backgroundColor = '#f8fbfe';
                 
                 if (e.dataTransfer.files.length) {
                     fileInput.files = e.dataTransfer.files;
@@ -1137,11 +799,7 @@
         // 更新文件状态
         function updateFileStatus(type, text, status) {
             const element = type === 'product' ? productStatus : orderStatus;
-            const icon = status === 'success' ? 'check-circle' : 
-                         status === 'warning' ? 'exclamation-triangle' : 
-                         status === 'danger' ? 'times-circle' : 'info-circle';
-            
-            element.innerHTML = `<i class="fas fa-${icon}"></i> ${text}`;
+            element.textContent = text;
             element.className = `badge badge-${status}`;
         }
         
@@ -1192,12 +850,6 @@
             const hasOrderMapping = orderCodeColumn.value !== '';
             
             matchBtn.disabled = !(hasProduct && hasOrder && hasProductMapping && hasOrderMapping);
-            
-            if (matchBtn.disabled) {
-                matchBtn.classList.remove('pulse');
-            } else {
-                matchBtn.classList.add('pulse');
-            }
         }
         
         // 监听列选择变化
@@ -1313,14 +965,80 @@
             html += '</table>';
             
             if (matchedOrders.length > 50) {
-                html += `<p style="text-align:center;padding:15px;color:#666;background:#f8f9fa;border-radius:0 0 8px 8px;">
-                    <i class="fas fa-info-circle"></i> 仅显示前50行，共${matchedOrders.length}行数据
-                </p>`;
+                html += `<p style="text-align:center;padding:10px;color:#666;">只显示前50行，共${matchedOrders.length}行</p>`;
             }
             
             previewContainer.innerHTML = html;
         }
         
+        // 设置工作表样式
+        function styleWorksheet(worksheet, headers) {
+            // 定义列宽映射
+            const widthMap = {
+                '订单类型': 4,
+                '订单号': 17.67,
+                '商品名称': 18,
+                '订单项目ID': 14.63,
+                '商品编码': 8.33,
+                '商品条码': 13,
+                '商品规格': 8.78,
+                '商品数量': 7.78,
+                '收货地址': 39.22,
+                '收货人姓名': 10,
+                '收货人名称': 10,
+                '用户备注': 6,
+                '用户备注信息': 6,
+                '物流公司': 6,
+                '物流公司编号（当物流公司选择其他物流时需填写）': 6,
+                '物流单号(物流快递单号支持输入多个物流单号，每个单号之间需要用英文逗号隔开)': 6,
+                '物流快递备注': 6,
+                '青龙配送编码（京东快递必填）': 6,
+                '退货地址编码': 6
+            };
+
+            // 设置列宽
+            const colWidths = headers.map(header => {
+                const cleanHeader = String(header).trim();
+                return { wch: widthMap[cleanHeader] || 15 }; // 默认宽度15
+            });
+            worksheet['!cols'] = colWidths;
+
+            // 获取范围
+            const range = XLSX.utils.decode_range(worksheet['!ref']);
+
+            // 设置行高
+            const rowHeights = [];
+            for (let i = range.s.r; i <= range.e.r; i++) {
+                rowHeights.push({ hpt: 25 });
+            }
+            worksheet['!rows'] = rowHeights;
+            
+            // 遍历所有单元格应用样式
+            for (let R = range.s.r; R <= range.e.r; ++R) {
+                for (let C = range.s.c; C <= range.e.c; ++C) {
+                    const cell_address = XLSX.utils.encode_cell({r: R, c: C});
+                    if (!worksheet[cell_address]) continue;
+                    
+                    // 基础样式：Arial 10, 居中, 不加粗, 自动换行
+                    const style = {
+                        font: { name: "Arial", sz: 10, bold: false, color: { rgb: "000000" } },
+                        alignment: { horizontal: "center", vertical: "center", wrapText: true }
+                    };
+                    
+                    // 应用样式
+                    worksheet[cell_address].s = style;
+                    
+                    // 数据行设置为文本格式
+                    if (R > 0) {
+                        worksheet[cell_address].z = '@';
+                        // worksheet[cell_address].t = 's'; // 保持原类型，依靠z='@'格式化
+                    } else {
+                        worksheet[cell_address].z = 'General';
+                    }
+                }
+            }
+        }
+
         // 下载匹配后的完整表格
         function downloadMatchedFile() {
             try {
@@ -1331,16 +1049,15 @@
                 // 创建工作表
                 const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
                 
-                // 设置列宽
-                const colWidths = headers.map(() => ({ wch: 18 }));
-                worksheet['!cols'] = colWidths;
+                // 应用样式
+                styleWorksheet(worksheet, headers);
                 
                 // 创建工作簿
                 const workbook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(workbook, worksheet, '匹配结果');
                 
                 // 生成文件名
-                const fileName = `永辉订单匹配结果_${currentDate}.xlsx`;
+                const fileName = `订单匹配结果_${currentDate}.xlsx`;
                 
                 // 生成并下载文件
                 const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
@@ -1394,7 +1111,7 @@
                 Object.keys(groupedData).forEach((manufacturer, index) => {
                     const rows = groupedData[manufacturer];
                     const safeManufacturer = manufacturer.replace(/[\/\\:*?"<>|]/g, '_');
-                    const fileName = `永辉_${safeManufacturer}_${currentDate}.xlsx`;
+                    const fileName = `厂家_${safeManufacturer}_${currentDate}.xlsx`;
                     
                     // 创建新表头（厂家 + 原表头）
                     const headers = ['厂家', ...orderHeaders];
@@ -1403,9 +1120,8 @@
                     // 创建工作表
                     const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
                     
-                    // 设置列宽（适合手机查看）
-                    const colWidths = headers.map(() => ({ wch: 18 }));
-                    worksheet['!cols'] = colWidths;
+                    // 应用样式
+                    styleWorksheet(worksheet, headers);
                     
                     // 创建工作簿
                     const workbook = XLSX.utils.book_new();
@@ -1430,8 +1146,8 @@
                         </div>
                         <div class="file-name">${fileName}</div>
                         <div class="file-meta">
-                            <div><i class="fas fa-industry"></i> 厂家: ${manufacturer}</div>
-                            <div><i class="fas fa-list-ol"></i> 订单数: ${rows.length} 行</div>
+                            <div>厂家: ${manufacturer}</div>
+                            <div>订单数: ${rows.length} 行</div>
                         </div>
                         <button class="download-btn" data-index="${index}">
                             <i class="fas fa-download"></i> 下载文件
@@ -1505,7 +1221,7 @@
                 });
                 
                 // 生成ZIP文件
-                const zipFileName = `永辉厂家订单拆分_${currentDate}.zip`;
+                const zipFileName = `厂家订单拆分_${currentDate}.zip`;
                 const content = await zip.generateAsync({ type: 'blob' });
                 
                 // 下载ZIP文件
@@ -1534,10 +1250,6 @@
         
         // 重置所有
         function resetAll() {
-            if (!confirm('确定要重置所有数据吗？这将清除所有已上传的文件和匹配结果。')) {
-                return;
-            }
-            
             // 重置变量
             productData = [];
             orderData = [];
@@ -1568,31 +1280,19 @@
             
             // 重置按钮状态
             matchBtn.disabled = true;
-            matchBtn.classList.remove('pulse');
             downloadMatchedBtn.disabled = true;
             splitBtn.disabled = true;
             
             // 清除全局变量
             window.splitFiles = null;
             
-            console.log('系统已重置');
+            console.log('已重置所有数据');
         }
         
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('永辉订单分发处理系统已加载');
+            console.log('订单厂家匹配工具已加载');
             console.log('当前日期:', currentDate);
-            
-            // 添加一些初始化效果
-            setTimeout(() => {
-                const logoIcon = document.querySelector('.logo-icon');
-                if (logoIcon) {
-                    logoIcon.style.transform = 'scale(1.1)';
-                    setTimeout(() => {
-                        logoIcon.style.transform = 'scale(1)';
-                    }, 300);
-                }
-            }, 500);
         });
     </script>
 </body>
